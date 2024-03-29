@@ -52,6 +52,13 @@ public class Laureate {
         this.genres = genres;
     }
 
+    public void setLanguages(String languages){
+        this.languages = languages;
+    }
+
+    public String getLanguages(){
+        return languages;
+    }
     public String getBirth_death() {
 
         return birth_death;

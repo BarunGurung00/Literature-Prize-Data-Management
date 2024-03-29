@@ -1,9 +1,9 @@
 package task1;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class LiteraturePrize {
@@ -16,6 +16,7 @@ public class LiteraturePrize {
 
     public LiteraturePrize() {
         data = new ArrayList<>();
+        finalData = load();
         showMenu();
     }
 
@@ -49,8 +50,7 @@ public class LiteraturePrize {
             }
         }
 
-        finalData = sortData(data);
-        return finalData;
+        return sortData(data);
     }
 
     private static ArrayList<Laureate> sortData(ArrayList<ArrayList<String>> dt) {
@@ -63,30 +63,18 @@ public class LiteraturePrize {
                 Laureate lr = new Laureate(Integer.parseInt(dt.get(i).get(0)), "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
                 arr.add(lr); // Adding Laureate object to the ArrayList
 
-            } else if(dt.get(i).size() == 4) {
-                //Condition if there is one winner in a specific year
+            } else if (dt.get(i).size() == 4) {
+                //Condition if there is only one winner in a specific year
                 int year = Integer.parseInt(dt.get(i).get(0));
-                String[] personalDetails = dt.get(i).get(1).split(" ");
-                String fullName = "";
+                String[] personalDetails = dt.get(i).get(1).split("\\|");
 
-                for (int j = 0; j < personalDetails.length - 1; j++) {
-                    fullName += personalDetails[j] + " ";
-                }
+                String country = personalDetails[1];
+                String language = personalDetails[2];
 
-                String[] secondBit = personalDetails[personalDetails.length-1].split("\\|");
+                String[] firstBit = personalDetails[0].split("\\(");
 
-                String dob = "";
-                String country = "";
-                String language = "";
-                if(secondBit.length<3){
-                    dob = secondBit[0];
-                    country = secondBit[1];
-                    language = secondBit[1];
-                } else {
-                    dob = secondBit[0];
-                    country = secondBit[1];
-                    language = secondBit[2];
-                }
+                String fullName = firstBit[0];
+                String dob = "(" + firstBit[1];
 
                 String citation = dt.get(i).get(2);
                 String genre = dt.get(i).get(3);
@@ -94,30 +82,19 @@ public class LiteraturePrize {
                 Laureate lr = new Laureate(year, fullName, dob, country, language, genre, citation);
                 arr.add(lr); // Adding Laureate object to the ArrayList
 
-            } else if(dt.get(i).size()>4){
-                //This case will share more than one winner
+            } else if (dt.get(i).size() > 4) {//This is for multiple winners in the same year
+
                 int year = Integer.parseInt(dt.get(i).get(0));
-                String[] personalDetails = dt.get(i).get(1).split(" ");
-                String fullName = "";
+                String[] personalDetails = dt.get(i).get(1).split("\\|");
 
-                for (int j = 0; j < personalDetails.length - 1; j++) {
-                    fullName += personalDetails[j] + " ";
-                }
+                String country = personalDetails[1];
+                String language = personalDetails[2];
 
-                String[] secondBit = personalDetails[personalDetails.length-1].split("\\|");
+                String[] firstBit = personalDetails[0].split("\\(");
 
-                String dob = "";
-                String country = "";
-                String language = "";
-                if(secondBit.length<3){
-                    dob = secondBit[0];
-                    country = secondBit[1];
-                    language = secondBit[1];
-                } else {
-                    dob = secondBit[0];
-                    country = secondBit[1];
-                    language = secondBit[2];
-                }
+                String fullName = firstBit[0];
+                String dob = "(" + firstBit[1];
+
                 String citation = dt.get(i).get(2);
                 String genre = dt.get(i).get(3);
 
@@ -125,26 +102,16 @@ public class LiteraturePrize {
                 arr.add(lr1); // Adding Laureate object to the ArrayList
 
                 //second Laureate's details
-                String[] personalDetails2 = dt.get(i).get(4).split(" ");
-                String fullName2 = "";
+                String[] personalDetails2 = dt.get(i).get(4).split("\\|");
 
-                for (int j = 0; j < personalDetails2.length - 1; j++) {
-                    fullName2 += personalDetails2[j] + " ";
-                }
+                String country2 = personalDetails2[1];
+                String language2 = personalDetails2[2];
 
-                String[] secondBit2 = personalDetails2[personalDetails2.length - 1].split("\\|");
-                String dob2 = "";
-                String country2 = "";
-                String language2 = "";
-                if(secondBit.length<3){
-                    dob2 = secondBit[0];
-                    country2 = secondBit[1];
-                    language2 = secondBit[1];
-                } else {
-                    dob2 = secondBit[0];
-                    country2 = secondBit[1];
-                    language2 = secondBit[2];
-                }
+                String[] firstBit2 = personalDetails2[0].split("\\(");
+
+                String fullName2 = firstBit2[0];
+                String dob2 = "(" + firstBit2[1];
+
                 String citation2 = dt.get(i).get(5);
                 String genre2 = dt.get(i).get(6);
 
@@ -171,7 +138,7 @@ public class LiteraturePrize {
             System.out.println("----------------------");
             System.out.print("Enter choice > ");
 
-            choice = scanner.nextLine();
+            choice = scanner.next();
 
             switch (choice) {
                 case "1":
@@ -195,8 +162,7 @@ public class LiteraturePrize {
     }
 
     //Method to List winners
-    private void listPrizes(){
-        ArrayList<String> laureates = new ArrayList<>();
+    private void listPrizes() {
         Scanner scanner = new Scanner(System.in);
         int startYear;
         int endYear;
@@ -209,37 +175,96 @@ public class LiteraturePrize {
         endYear = scanner.nextInt();
 
         //Year, Name, [nation]
-        ArrayList<Laureate> d = load();
+        ArrayList<Laureate> d = finalData;
         System.out.println("------------------------------------------------------------");
         System.out.println("|  Year  |  Prize winners (and associated nations)         |");
         System.out.println("------------------------------------------------------------");
 
-        for(Laureate l: d){
+        for (Laureate l : d) {
             int yr = l.getYear();
-                 if(yr >= startYear && yr <= endYear) {
-                     if (l.getName().equals("N/A")) {
-                         System.out.println("|  " + yr + "  | NOT AWARDED                        ");
-                     } else {
-                         String prizeWinner = l.getName() + " " + "[" + l.getNations() + "]";
-                         System.out.println("|  " + yr + "  | " + prizeWinner);
-                     }
-                 }
+            if (yr >= startYear && yr <= endYear) {
+                if (l.getName().equals("N/A")) {
+                    System.out.println("|  " + yr + "  | NOT AWARDED                        ");
+                } else {
+                    String prizeWinner = l.getName() + " " + "[" + l.getNations() + "]";
+                    System.out.println("|  " + yr + "  | " + prizeWinner);
+                }
+            }
         }
 
         System.out.println("------------------------------------------------------------");
-
         System.out.println();
     }
 
     //Method to select prizes
-    private static void selectPrizes(){
-        System.out.println("All the selected winners");
+    private void selectPrizes() {
+        Scanner scanner = new Scanner(System.in);
+        int year;
+
+        System.out.println();
+        System.out.print("Enter year of prize > ");
+        year = scanner.nextInt();
+        ArrayList<Laureate> laureates = finalData;
+
+        System.out.println();
+        System.out.println("-------------------------------------------------------------------");
+        System.out.println("| Winner(s)          | Born | Died | Language(s)    | Genre(s)    |");
+        System.out.println("-------------------------------------------------------------------");
+
+        for (Laureate lr : laureates) {
+            if (year == lr.year) {
+
+                    String dob = lr.birth_death;
+                    String[] db = dob.split("");
+                    String born;
+                    String died;
+                    if (db.length == 9) {
+                        born = db[4] + db[5] + db[6] + db[7];
+                        died = "----";
+                    } else {
+                        born = db[1] + db[2] + db[3] + db[4];
+                        died = db[6] + db[7] + db[8] + db[9];
+                    }
+
+                    System.out.println("| " + lr.name + "       | " + born + " | " + died + " | " + lr.languages + "      | " + lr.genres);
+
+                    System.out.println("-------------------------------------------------------------------");
+                    System.out.println("|                        Citation:                                  ");
+                    System.out.println("|                                                                  ");
+                    System.out.println("|     " + lr.citation + "    ");
+                    System.out.println("-------------------------------------------------------------------");
+            }
+            System.out.println();
+        }
     }
 
     //Search Laureates based on genre
-    private static void searchLaureate(){
-        System.out.println("Genres");
+    private void searchLaureate() {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println();
+        System.out.print("Enter search term for writing genre > ");
+        String term = scanner.nextLine().toLowerCase();
+
+        ArrayList<Laureate> dt = finalData;
+
+        System.out.println("---------------------------------------------------------");
+        System.out.println("| Name            | Genres                       | Year |");
+        System.out.println("---------------------------------------------------------");
+
+        for(Laureate lr: dt){
+            String[] lrGenres = lr.genres.split(",");
+            for(String s: lrGenres){
+               if(s.trim().contains(term)){
+
+                   lr.setGenre(lr.genres.replace(term.trim(),term.trim().toUpperCase()));
+                   System.out.println("| " + lr.name + " | " + lr.genres + " | " + lr.year + " |");
+               }
+            }
+        }
+        System.out.println("---------------------------------------------------------");
     }
+
 
     @Override
     public String toString() {
