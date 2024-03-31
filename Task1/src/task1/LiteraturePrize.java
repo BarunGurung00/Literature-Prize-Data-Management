@@ -1,5 +1,6 @@
 package task1;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -177,17 +178,22 @@ public class LiteraturePrize {
         //Year, Name, [nation]
         ArrayList<Laureate> d = finalData;
         System.out.println("------------------------------------------------------------");
-        System.out.println("|  Year  |  Prize winners (and associated nations)         |");
+        String formatter = "| %-5s | %-60s |%n";
+        System.out.format(formatter, "Year","Prize winners (and associated nations)");
         System.out.println("------------------------------------------------------------");
+
+
+
+
 
         for (Laureate l : d) {
             int yr = l.getYear();
             if (yr >= startYear && yr <= endYear) {
                 if (l.getName().equals("N/A")) {
-                    System.out.println("|  " + yr + "  | NOT AWARDED                        ");
+                    System.out.format(formatter,yr,"NOT AWARDED");
                 } else {
                     String prizeWinner = l.getName() + " " + "[" + l.getNations() + "]";
-                    System.out.println("|  " + yr + "  | " + prizeWinner);
+                    System.out.format(formatter, yr, prizeWinner);
                 }
             }
         }
@@ -207,9 +213,10 @@ public class LiteraturePrize {
         ArrayList<Laureate> laureates = finalData;
 
         System.out.println();
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println("| Winner(s)          | Born | Died | Language(s)    | Genre(s)    |");
-        System.out.println("-------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------");
+        String formatter = "| %-25s | %-5s | %-5s | %-15s | %-30s | %n";
+        System.out.format(formatter, "Winner(s)", "Born", "Died", "Language(s)", "Genre(s)");
+        System.out.println("--------------------------------------------------------------------------------------------------");
 
         for (Laureate lr : laureates) {
             if (year == lr.year) {
@@ -226,16 +233,17 @@ public class LiteraturePrize {
                         died = db[6] + db[7] + db[8] + db[9];
                     }
 
-                    System.out.println("| " + lr.name + "       | " + born + " | " + died + " | " + lr.languages + "      | " + lr.genres);
+                    System.out.format(formatter,lr.name, born, died, lr.languages, lr.genres);
 
-                    System.out.println("-------------------------------------------------------------------");
-                    System.out.println("|                        Citation:                                  ");
-                    System.out.println("|                                                                  ");
-                    System.out.println("|     " + lr.citation + "    ");
-                    System.out.println("-------------------------------------------------------------------");
+                    System.out.println("------------------------------------------------------------------------------------------------");
+                    String citation_formatter = "| %-30s | %n";
+                    System.out.format(citation_formatter,"                        Citation:                                             ");
+                    System.out.println("|                                                                                        |");
+                    System.out.format(citation_formatter, lr.citation);
+                    System.out.println("-------------------------------------------------------------------------------------------------");
             }
-            System.out.println();
         }
+        System.out.println();
     }
 
     //Search Laureates based on genre
@@ -248,9 +256,10 @@ public class LiteraturePrize {
 
         ArrayList<Laureate> dt = finalData;
 
-        System.out.println("---------------------------------------------------------");
-        System.out.println("| Name            | Genres                       | Year |");
-        System.out.println("---------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------");
+        String formatter = "| %-20s | %-65s | %-5s | %n";
+        System.out.format(formatter, "Name", "Genres", "Year");
+        System.out.println("----------------------------------------------------------------------------------------------------");
 
         for(Laureate lr: dt){
             String[] lrGenres = lr.genres.split(",");
@@ -258,11 +267,11 @@ public class LiteraturePrize {
                if(s.trim().contains(term)){
 
                    lr.setGenre(lr.genres.replace(term.trim(),term.trim().toUpperCase()));
-                   System.out.println("| " + lr.name + " | " + lr.genres + " | " + lr.year + " |");
+                   System.out.format(formatter, lr.name, lr.genres, lr.year);
                }
             }
         }
-        System.out.println("---------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------");
     }
 
 
