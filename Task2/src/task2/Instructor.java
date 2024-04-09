@@ -6,6 +6,10 @@ public class Instructor {
 
     private String name;
 
+    public Instructor(String n){
+        this.name = n;
+    }
+
     public String getName() {
         return name;
     }

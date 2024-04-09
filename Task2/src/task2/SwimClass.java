@@ -7,9 +7,17 @@ public class SwimClass {
 
     private SwimDay day;
     private String start_time;
-    private String level;
+    private SwimLevel level;
     private Instructor instructor;
-    private List<SwimStudent> students;
+    private static List<SwimStudent> students;
+
+    public SwimClass(SwimDay day, String start_time, SwimLevel sl, Instructor ins){
+        this.day = day;
+        this.start_time = start_time;
+        this.level = sl;
+        this.instructor = ins;
+        this.students = new ArrayList<>();
+    }
 
     public Instructor getInstructor() {
         return instructor;
@@ -17,14 +25,6 @@ public class SwimClass {
 
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
-    }
-
-    public List<SwimStudent> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<SwimStudent> students) {
-        this.students = students;
     }
 
     public SwimDay getDay() {
@@ -43,23 +43,21 @@ public class SwimClass {
         this.start_time = start_time;
     }
 
-    public String getLevel() {
+    public SwimLevel getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(SwimLevel level) {
         this.level = level;
     }
 
-    @Override
-    public String toString(){
-        StringBuilder str = new StringBuilder();
-        str.append("Day: " + day + "\n");
-        str.append("Start time: " + start_time + "\n");
-        str.append("Level of the swimmer -> " + level + "\n");
-
-        return str.toString();
+    public static List<SwimStudent> getStudents() {
+        return students;
     }
+    public void addStudent(SwimStudent student) {
+        students.add(student);
+    }
+
 }
 
 

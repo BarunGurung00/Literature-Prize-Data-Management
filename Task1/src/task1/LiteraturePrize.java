@@ -11,7 +11,7 @@ public class LiteraturePrize {
 
     private ArrayList<ArrayList<String>> data;
     private ArrayList<Laureate> finalData;
-    ;
+
     public String year;
     public String winners;
 
@@ -22,7 +22,7 @@ public class LiteraturePrize {
     }
 
     public ArrayList<Laureate> load() {
-        String filePath = System.getProperty("user.dir") + File.separator + "literature-prizes.txt";
+        String filePath = System.getProperty("user.dir") + "/Task1" +  File.separator + "literature-prizes.txt";
         Scanner input = null;
 
         try {
@@ -177,10 +177,10 @@ public class LiteraturePrize {
 
         //Year, Name, [nation]
         ArrayList<Laureate> d = finalData;
-        System.out.println("------------------------------------------------------------");
-        String formatter = "| %-5s | %-60s |%n";
+        System.out.println("--------------------------------------------------------");
+        String formatter = "| %-5s | %-45s |%n";
         System.out.format(formatter, "Year","Prize winners (and associated nations)");
-        System.out.println("------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------");
 
 
 
@@ -198,7 +198,7 @@ public class LiteraturePrize {
             }
         }
 
-        System.out.println("------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------");
         System.out.println();
     }
 

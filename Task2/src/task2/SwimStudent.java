@@ -5,10 +5,10 @@ import java.lang.StringBuilder;
 public class SwimStudent {
 
     private String name;
-    private String level;
+    private SwimLevel level;
     private boolean onWaitingList;
 
-    public SwimStudent(String name, String level, boolean onWaitingList){
+    public SwimStudent(String name, SwimLevel level){
         this.name = name;
         this.level = level;
         this.onWaitingList = false;
@@ -31,11 +31,11 @@ public class SwimStudent {
         this.name = name;
     }
 
-    public String getLevel() {
+    public SwimLevel getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(SwimLevel level) {
         this.level = level;
     }
 
